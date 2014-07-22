@@ -14,12 +14,9 @@ namespace NWBA.Controllers
 {
     public class CustomerController : Controller
     {
-         /// User manager - attached to application DB context
-        /// </summary>
-        protected UserManager<ApplicationUser> UserManager { get; set; }
+         protected UserManager<ApplicationUser> UserManager { get; set; }
         protected ApplicationDbContext ApplicationDbContext { get; set; }
-        // GET: /Bank/
-        
+                
         private NWABEntities db = new NWABEntities();
 
         public CustomerController()
@@ -30,7 +27,6 @@ namespace NWBA.Controllers
         }
 
 
-        // GET: /Customer/
    
         public ActionResult Details()
         {
@@ -38,7 +34,9 @@ namespace NWBA.Controllers
             if (Request.IsAuthenticated)
             {
                 int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
+                
                 customer cust = new customer();
+                
                 if (custID == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -46,8 +44,11 @@ namespace NWBA.Controllers
                 else {                 
                     cust = db.customers.Find(custID);
                 }
-
-               
+                ICollection<customerAddress> custaddress = cust.customerAddresses;
+                ICollection<customerPhoneNumber> custPhoneNumber = cust.customerPhoneNumbers;
+                ViewBag.CustomerAddresses = custaddress;
+                ViewBag.CustomerPhoneNumbers = custPhoneNumber;
+                
                 return View(cust);
             }
             else
@@ -78,9 +79,7 @@ namespace NWBA.Controllers
             return View(customer);
         }
 
-        // POST: /Customer/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include="custID,custName,TFN")] customer customer)
