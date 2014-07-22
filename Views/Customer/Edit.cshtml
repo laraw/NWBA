@@ -1,0 +1,137 @@
+﻿@model NWBA.Models.customer
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Your Profile    </h4>
+        <hr />
+        <h4>Customer Information</h4>
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.custID)
+        
+        <div class="form-group">
+            @*@Html.LabelFor(model => model.custName, new { @class = "control-label col-md-2" })*@
+            @Html.Label("Customer Name", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.custName)
+                @Html.ValidationMessageFor(model => model.custName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TFN, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TFN)
+                @Html.ValidationMessageFor(model => model.TFN)
+            </div>
+        </div>
+
+        @foreach (var item in Model.customerAddresses)
+        {
+            if (item.addressTypeCode == 1)
+            {
+                <h4>Mailing Address</h4>
+            }
+            else if (item.addressTypeCode == 2)
+            {
+                <h4>Billing address </h4>
+            }
+        <div class="form-group">
+            @*@Html.LabelFor(model => item.addressline1, new { @class = "control-label col-md-2" })*@
+                @Html.Label("Address Line 1", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => item.addressline1)
+                @Html.ValidationMessageFor(model => item.addressline1)
+            </div>
+            
+        </div>
+       <div class="form-group">
+                @Html.Label("Address Line 2", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => item.addressline2)
+                @Html.ValidationMessageFor(model => item.addressline2)
+            </div>
+            
+        </div>
+       <div class="form-group">
+                @Html.Label("City", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => item.city)
+                @Html.ValidationMessageFor(model => item.city)
+            </div>
+            
+        </div>
+          <div class="form-group">
+                @Html.Label("PostCode", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => item.postcode)
+                @Html.ValidationMessageFor(model => item.postcode)
+            </div>
+            
+        </div>
+        }
+        <h4>Contact Information</h4>
+        @foreach (var item in Model.customerPhoneNumbers)
+        {
+            string phoneLabel = "Phone Number";
+
+            switch (item.phoneTypeCode)
+            {
+                   
+                case 1:
+                    phoneLabel = "Home Phone";
+                    break;
+                case 2:
+                    phoneLabel = "Work Phone";
+                    break;
+                case 3:
+                    phoneLabel = "Mobile Phone";
+                    break;
+                case 4:
+                    phoneLabel = "Fax";
+                    break;
+                case 5:
+                    phoneLabel = "Email";
+                    break;
+                default:
+                    phoneLabel = "Phone Number";
+                    break;
+            }                   
+                 <div class="form-group">
+                @Html.Label(phoneLabel, new { @class = "control-label col-md-2" })
+              
+                <div class="col-md-10">
+                    @Html.EditorFor(model => item.phoneNumber)
+                    @Html.ValidationMessageFor(model => item.phoneNumber)
+                </div>
+            
+            </div>
+             
+            }
+
+            
+                 
+            
+
+     }
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default"  />
+            </div>
+        </div>
+    </div>
+}
+
+
