@@ -1,0 +1,62 @@
+﻿@model IEnumerable<NWBA.Models.transaction>
+
+@{
+    ViewBag.Title = "Transactions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Transactions List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.modifyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.accountNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.destAccoutNum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.transactionTypeLookup.Description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.modifyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.accountNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.destAccoutNum)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.transactionTypeLookup.Description)
+        </td>
+        <td>
+           
+        </td>
+    </tr>
+}
+
+</table>
