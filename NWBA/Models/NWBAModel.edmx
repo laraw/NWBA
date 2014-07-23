@@ -14,20 +14,6 @@
           <Property Name="custID" Type="int" Nullable="false" />
           <Property Name="modifyDate" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="accountTypeLookup">
-          <Key>
-            <PropertyRef Name="accountTypeCode" />
-          </Key>
-          <Property Name="accountTypeCode" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="150" />
-        </EntityType>
-        <EntityType Name="addressTypeLookup">
-          <Key>
-            <PropertyRef Name="addressTypeCode" />
-          </Key>
-          <Property Name="addressTypeCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <EntityType Name="billPay">
           <Key>
             <PropertyRef Name="billPayID" />
@@ -48,30 +34,14 @@
           <Property Name="custName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="TFN" Type="nvarchar" MaxLength="11" />
           <Property Name="dateCreated" Type="date" Nullable="false" />
-        </EntityType>
-        <EntityType Name="customerAddress">
-          <Key>
-            <PropertyRef Name="pkID" />
-          </Key>
-          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="custID" Type="int" Nullable="false" />
-          <Property Name="addressline1" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="addressline2" Type="nvarchar" MaxLength="20" />
-          <Property Name="city" Type="nvarchar" MaxLength="40" Nullable="false" />
-          <Property Name="state" Type="nvarchar" MaxLength="3" Nullable="false" />
-          <Property Name="country" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="postcode" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="addressTypeCode" Type="int" Nullable="false" />
-        </EntityType>
-        <EntityType Name="customerPhoneNumber">
-          <Key>
-            <PropertyRef Name="pkID" />
-          </Key>
-          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="custID" Type="int" Nullable="false" />
-          <Property Name="phoneNumber" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="phoneTypeCode" Type="int" Nullable="false" />
-          <Property Name="silent" Type="bit" Nullable="false" />
+          <Property Name="addressLine1" Type="nvarchar" MaxLength="300" />
+          <Property Name="addressLine2" Type="nvarchar" MaxLength="300" />
+          <Property Name="suburb" Type="nvarchar" MaxLength="150" />
+          <Property Name="state" Type="nvarchar" MaxLength="5" />
+          <Property Name="postalCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="phoneNumber" Type="nvarchar" MaxLength="12" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="12" />
+          <Property Name="email" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="login">
           <Key>
@@ -94,27 +64,6 @@
           <Property Name="bPayCode" Type="int" Nullable="false" />
           <Property Name="phone" Type="nvarchar" MaxLength="12" Nullable="false" />
         </EntityType>
-        <EntityType Name="periodLookup">
-          <Key>
-            <PropertyRef Name="periodCode" />
-          </Key>
-          <Property Name="periodCode" Type="nvarchar" MaxLength="1" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" />
-        </EntityType>
-        <EntityType Name="phoneTypeLookup">
-          <Key>
-            <PropertyRef Name="phoneTypeCode" />
-          </Key>
-          <Property Name="phoneTypeCode" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
-        <EntityType Name="StateLookup">
-          <Key>
-            <PropertyRef Name="StateCode" />
-          </Key>
-          <Property Name="StateCode" Type="nvarchar" MaxLength="3" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="200" Nullable="false" />
-        </EntityType>
         <EntityType Name="transaction">
           <Key>
             <PropertyRef Name="transactionID" />
@@ -126,15 +75,7 @@
           <Property Name="amount" Type="float" Nullable="false" />
           <Property Name="comment" Type="nvarchar" MaxLength="300" />
           <Property Name="modifyDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="transactionTypeLookup">
-          <Key>
-            <PropertyRef Name="transactionTypeID" />
-          </Key>
-          <Property Name="transactionTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="fee" Type="float" Nullable="false" />
-          <Property Name="typeCode" Type="nvarchar" MaxLength="1" />
+          <Property Name="transactionTypeCode" Type="nvarchar" MaxLength="1" />
         </EntityType>
         <Association Name="FK_account_custID">
           <End Role="customer" Type="Self.customer" Multiplicity="1" />
@@ -148,75 +89,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_account_typelookup">
-          <End Role="accountTypeLookup" Type="Self.accountTypeLookup" Multiplicity="1" />
-          <End Role="account" Type="Self.account" Multiplicity="*" />
+        <Association Name="FK_billPay_Payee">
+          <End Role="Payee" Type="Self.Payee" Multiplicity="1" />
+          <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="accountTypeLookup">
-              <PropertyRef Name="accountTypeCode" />
+            <Principal Role="Payee">
+              <PropertyRef Name="payeeID" />
             </Principal>
-            <Dependent Role="account">
-              <PropertyRef Name="accountTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerAddress_addressTypeLookup">
-          <End Role="addressTypeLookup" Type="Self.addressTypeLookup" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="addressTypeLookup">
-              <PropertyRef Name="addressTypeCode" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="addressTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerAddress_customer">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerAddress_StateLookup">
-          <End Role="StateLookup" Type="Self.StateLookup" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StateLookup">
-              <PropertyRef Name="StateCode" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerPhoneNumber_customerID">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="customerPhoneNumber" Type="Self.customerPhoneNumber" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="customerPhoneNumber">
-              <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerPhoneNumber_phoneTypeLookup">
-          <End Role="phoneTypeLookup" Type="Self.phoneTypeLookup" Multiplicity="1" />
-          <End Role="customerPhoneNumber" Type="Self.customerPhoneNumber" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="phoneTypeLookup">
-              <PropertyRef Name="phoneTypeCode" />
-            </Principal>
-            <Dependent Role="customerPhoneNumber">
-              <PropertyRef Name="phoneTypeCode" />
+            <Dependent Role="billPay">
+              <PropertyRef Name="payeeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -233,26 +114,14 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="fk_Payee_BPAY">
-          <End Role="Payee" Type="Self.Payee" Multiplicity="1" />
+          <End Role="account" Type="Self.account" Multiplicity="1" />
           <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Payee">
-              <PropertyRef Name="payeeID" />
+            <Principal Role="account">
+              <PropertyRef Name="accountNumber" />
             </Principal>
             <Dependent Role="billPay">
-              <PropertyRef Name="payeeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="fk_PeriodCode_BPAy">
-          <End Role="periodLookup" Type="Self.periodLookup" Multiplicity="1" />
-          <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="periodLookup">
-              <PropertyRef Name="periodCode" />
-            </Principal>
-            <Dependent Role="billPay">
-              <PropertyRef Name="periodCode" />
+              <PropertyRef Name="accountNum" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -280,71 +149,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_transaction_transactionTypeLookup">
-          <End Role="transactionTypeLookup" Type="Self.transactionTypeLookup" Multiplicity="1" />
-          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="transactionTypeLookup">
-              <PropertyRef Name="transactionTypeID" />
-            </Principal>
-            <Dependent Role="transaction">
-              <PropertyRef Name="transactionType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="NWABModelStoreContainer">
           <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="accountTypeLookup" EntityType="Self.accountTypeLookup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="addressTypeLookup" EntityType="Self.addressTypeLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="billPay" EntityType="Self.billPay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="customerAddress" EntityType="Self.customerAddress" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="customerPhoneNumber" EntityType="Self.customerPhoneNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="login" EntityType="Self.login" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payee" EntityType="Self.Payee" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="periodLookup" EntityType="Self.periodLookup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="phoneTypeLookup" EntityType="Self.phoneTypeLookup" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="StateLookup" EntityType="Self.StateLookup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="transaction" EntityType="Self.transaction" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="transactionTypeLookup" EntityType="Self.transactionTypeLookup" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
             <End Role="customer" EntitySet="customer" />
             <End Role="account" EntitySet="account" />
           </AssociationSet>
-          <AssociationSet Name="FK_account_typelookup" Association="Self.FK_account_typelookup">
-            <End Role="accountTypeLookup" EntitySet="accountTypeLookup" />
-            <End Role="account" EntitySet="account" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_addressTypeLookup" Association="Self.FK_customerAddress_addressTypeLookup">
-            <End Role="addressTypeLookup" EntitySet="addressTypeLookup" />
-            <End Role="customerAddress" EntitySet="customerAddress" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_customer" Association="Self.FK_customerAddress_customer">
-            <End Role="customer" EntitySet="customer" />
-            <End Role="customerAddress" EntitySet="customerAddress" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_StateLookup" Association="Self.FK_customerAddress_StateLookup">
-            <End Role="StateLookup" EntitySet="StateLookup" />
-            <End Role="customerAddress" EntitySet="customerAddress" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerPhoneNumber_customerID" Association="Self.FK_customerPhoneNumber_customerID">
-            <End Role="customer" EntitySet="customer" />
-            <End Role="customerPhoneNumber" EntitySet="customerPhoneNumber" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerPhoneNumber_phoneTypeLookup" Association="Self.FK_customerPhoneNumber_phoneTypeLookup">
-            <End Role="phoneTypeLookup" EntitySet="phoneTypeLookup" />
-            <End Role="customerPhoneNumber" EntitySet="customerPhoneNumber" />
+          <AssociationSet Name="FK_billPay_Payee" Association="Self.FK_billPay_Payee">
+            <End Role="Payee" EntitySet="Payee" />
+            <End Role="billPay" EntitySet="billPay" />
           </AssociationSet>
           <AssociationSet Name="FK_login_customerID" Association="Self.FK_login_customerID">
             <End Role="customer" EntitySet="customer" />
             <End Role="login" EntitySet="login" />
           </AssociationSet>
           <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
-            <End Role="Payee" EntitySet="Payee" />
-            <End Role="billPay" EntitySet="billPay" />
-          </AssociationSet>
-          <AssociationSet Name="fk_PeriodCode_BPAy" Association="Self.fk_PeriodCode_BPAy">
-            <End Role="periodLookup" EntitySet="periodLookup" />
+            <End Role="account" EntitySet="account" />
             <End Role="billPay" EntitySet="billPay" />
           </AssociationSet>
           <AssociationSet Name="FK_transaction_account" Association="Self.FK_transaction_account">
@@ -353,10 +178,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_transaction_account1" Association="Self.FK_transaction_account1">
             <End Role="account" EntitySet="account" />
-            <End Role="transaction" EntitySet="transaction" />
-          </AssociationSet>
-          <AssociationSet Name="FK_transaction_transactionTypeLookup" Association="Self.FK_transaction_transactionTypeLookup">
-            <End Role="transactionTypeLookup" EntitySet="transactionTypeLookup" />
             <End Role="transaction" EntitySet="transaction" />
           </AssociationSet>
         </EntityContainer>
@@ -373,25 +194,9 @@
           <Property Name="custID" Type="Int32" Nullable="false" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="customer" Relationship="Self.FK_account_custID" FromRole="account" ToRole="customer" />
-          <NavigationProperty Name="accountTypeLookup" Relationship="Self.FK_account_typelookup" FromRole="account" ToRole="accountTypeLookup" />
           <NavigationProperty Name="transactions" Relationship="NWABModel.FK_transaction_account" FromRole="account" ToRole="transaction" />
           <NavigationProperty Name="transactions1" Relationship="NWABModel.FK_transaction_account1" FromRole="account" ToRole="transaction" />
-        </EntityType>
-        <EntityType Name="accountTypeLookup">
-          <Key>
-            <PropertyRef Name="accountTypeCode" />
-          </Key>
-          <Property Name="accountTypeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="accounts" Relationship="Self.FK_account_typelookup" FromRole="accountTypeLookup" ToRole="account" />
-        </EntityType>
-        <EntityType Name="addressTypeLookup">
-          <Key>
-            <PropertyRef Name="addressTypeCode" />
-          </Key>
-          <Property Name="addressTypeCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="customerAddresses" Relationship="Self.FK_customerAddress_addressTypeLookup" FromRole="addressTypeLookup" ToRole="customerAddress" />
+          <NavigationProperty Name="billPays" Relationship="NWABModel.fk_Payee_BPAY1" FromRole="account" ToRole="billPay" />
         </EntityType>
         <EntityType Name="billPay">
           <Key>
@@ -405,7 +210,7 @@
           <Property Name="periodCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Payee" Relationship="Self.fk_Payee_BPAY" FromRole="billPay" ToRole="Payee" />
-          <NavigationProperty Name="periodLookup" Relationship="Self.fk_PeriodCode_BPAy" FromRole="billPay" ToRole="periodLookup" />
+          <NavigationProperty Name="account" Relationship="NWABModel.fk_Payee_BPAY1" FromRole="billPay" ToRole="account" />
         </EntityType>
         <EntityType Name="customer">
           <Key>
@@ -416,47 +221,24 @@
           <Property Name="TFN" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="accounts" Relationship="Self.FK_account_custID" FromRole="customer" ToRole="account" />
-          <NavigationProperty Name="customerAddresses" Relationship="Self.FK_customerAddress_customer" FromRole="customer" ToRole="customerAddress" />
-          <NavigationProperty Name="customerPhoneNumbers" Relationship="Self.FK_customerPhoneNumber_customerID" FromRole="customer" ToRole="customerPhoneNumber" />
           <NavigationProperty Name="login" Relationship="Self.FK_login_customerID" FromRole="customer" ToRole="login" />
-        </EntityType>
-        <EntityType Name="customerAddress">
-          <Key>
-            <PropertyRef Name="pkID" />
-          </Key>
-          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="custID" Type="Int32" Nullable="false" />
-          <Property Name="addressline1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="addressline2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="city" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="state" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="postcode" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="addressTypeCode" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="addressTypeLookup" Relationship="Self.FK_customerAddress_addressTypeLookup" FromRole="customerAddress" ToRole="addressTypeLookup" />
-          <NavigationProperty Name="customer" Relationship="Self.FK_customerAddress_customer" FromRole="customerAddress" ToRole="customer" />
-          <NavigationProperty Name="StateLookup" Relationship="Self.FK_customerAddress_StateLookup" FromRole="customerAddress" ToRole="StateLookup" />
-        </EntityType>
-        <EntityType Name="customerPhoneNumber">
-          <Key>
-            <PropertyRef Name="pkID" />
-          </Key>
-          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="custID" Type="Int32" Nullable="false" />
-          <Property Name="phoneNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="phoneTypeCode" Type="Int32" Nullable="false" />
-          <Property Name="silent" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="customer" Relationship="Self.FK_customerPhoneNumber_customerID" FromRole="customerPhoneNumber" ToRole="customer" />
-          <NavigationProperty Name="phoneTypeLookup" Relationship="Self.FK_customerPhoneNumber_phoneTypeLookup" FromRole="customerPhoneNumber" ToRole="phoneTypeLookup" />
+          <Property Name="addressLine1" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="addressLine2" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="suburb" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="state" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="postalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="phoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="login">
           <Key>
             <PropertyRef Name="custID" />
           </Key>
-          <Property Name="custID" Type="Int32" Nullable="false" />
-          <Property Name="userid" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="pass" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="modifydate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="custID" Nullable="false" Type="Int32" />
+          <Property Name="userid" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="pass" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="modifydate" Nullable="false" Precision="3" Type="DateTime" />
           <NavigationProperty Name="customer" Relationship="Self.FK_login_customerID" FromRole="login" ToRole="customer" />
         </EntityType>
         <EntityType Name="Payee">
@@ -472,40 +254,6 @@
           <Property Name="phone" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="billPays" Relationship="Self.fk_Payee_BPAY" FromRole="Payee" ToRole="billPay" />
         </EntityType>
-        <EntityType Name="periodLookup">
-          <Key>
-            <PropertyRef Name="periodCode" />
-          </Key>
-          <Property Name="periodCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="billPays" Relationship="Self.fk_PeriodCode_BPAy" FromRole="periodLookup" ToRole="billPay" />
-        </EntityType>
-        <EntityType Name="phoneTypeLookup">
-          <Key>
-            <PropertyRef Name="phoneTypeCode" />
-          </Key>
-          <Property Name="phoneTypeCode" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="customerPhoneNumbers" Relationship="Self.FK_customerPhoneNumber_phoneTypeLookup" FromRole="phoneTypeLookup" ToRole="customerPhoneNumber" />
-        </EntityType>
-        <EntityType Name="StateLookup">
-          <Key>
-            <PropertyRef Name="StateCode" />
-          </Key>
-          <Property Name="StateCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="customerAddresses" Relationship="Self.FK_customerAddress_StateLookup" FromRole="StateLookup" ToRole="customerAddress" />
-        </EntityType>
-        <EntityType Name="transactionTypeLookup">
-          <Key>
-            <PropertyRef Name="transactionTypeID" />
-          </Key>
-          <Property Name="transactionTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="fee" Type="Double" Nullable="false" />
-          <Property Name="typeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="transactions" Relationship="NWABModel.FK_transaction_transactionTypeLookup" FromRole="transactionTypeLookup" ToRole="transaction" />
-        </EntityType>
         <Association Name="FK_account_custID">
           <End Role="customer" Type="Self.customer" Multiplicity="1" />
           <End Role="account" Type="Self.account" Multiplicity="*" />
@@ -515,30 +263,6 @@
             </Principal>
             <Dependent Role="account">
               <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_account_typelookup">
-          <End Role="accountTypeLookup" Type="Self.accountTypeLookup" Multiplicity="1" />
-          <End Role="account" Type="Self.account" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="accountTypeLookup">
-              <PropertyRef Name="accountTypeCode" />
-            </Principal>
-            <Dependent Role="account">
-              <PropertyRef Name="accountTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerAddress_addressTypeLookup">
-          <End Role="addressTypeLookup" Type="Self.addressTypeLookup" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="addressTypeLookup">
-              <PropertyRef Name="addressTypeCode" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="addressTypeCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -554,45 +278,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="fk_PeriodCode_BPAy">
-          <End Role="periodLookup" Type="Self.periodLookup" Multiplicity="1" />
-          <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="periodLookup">
-              <PropertyRef Name="periodCode" />
-            </Principal>
-            <Dependent Role="billPay">
-              <PropertyRef Name="periodCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerAddress_customer">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerPhoneNumber_customerID">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="customerPhoneNumber" Type="Self.customerPhoneNumber" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="customerPhoneNumber">
-              <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_login_customerID">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="login" Type="Self.login" Multiplicity="0..1" />
+          <End Type="Self.customer" Multiplicity="1" Role="customer" />
+          <End Type="Self.login" Multiplicity="0..1" Role="login" />
           <ReferentialConstraint>
             <Principal Role="customer">
               <PropertyRef Name="custID" />
@@ -602,83 +290,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_customerAddress_StateLookup">
-          <End Role="StateLookup" Type="Self.StateLookup" Multiplicity="1" />
-          <End Role="customerAddress" Type="Self.customerAddress" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="StateLookup">
-              <PropertyRef Name="StateCode" />
-            </Principal>
-            <Dependent Role="customerAddress">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_customerPhoneNumber_phoneTypeLookup">
-          <End Role="phoneTypeLookup" Type="Self.phoneTypeLookup" Multiplicity="1" />
-          <End Role="customerPhoneNumber" Type="Self.customerPhoneNumber" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="phoneTypeLookup">
-              <PropertyRef Name="phoneTypeCode" />
-            </Principal>
-            <Dependent Role="customerPhoneNumber">
-              <PropertyRef Name="phoneTypeCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="NWABEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="accounts" EntityType="Self.account" />
-          <EntitySet Name="accountTypeLookups" EntityType="Self.accountTypeLookup" />
-          <EntitySet Name="addressTypeLookups" EntityType="Self.addressTypeLookup" />
           <EntitySet Name="billPays" EntityType="Self.billPay" />
           <EntitySet Name="customers" EntityType="Self.customer" />
-          <EntitySet Name="customerAddresses" EntityType="Self.customerAddress" />
-          <EntitySet Name="customerPhoneNumbers" EntityType="Self.customerPhoneNumber" />
           <EntitySet Name="logins" EntityType="Self.login" />
           <EntitySet Name="Payees" EntityType="Self.Payee" />
-          <EntitySet Name="periodLookups" EntityType="Self.periodLookup" />
-          <EntitySet Name="phoneTypeLookups" EntityType="Self.phoneTypeLookup" />
-          <EntitySet Name="StateLookups" EntityType="Self.StateLookup" />
-          <EntitySet Name="transactionTypeLookups" EntityType="Self.transactionTypeLookup" />
           <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
             <End Role="customer" EntitySet="customers" />
             <End Role="account" EntitySet="accounts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_account_typelookup" Association="Self.FK_account_typelookup">
-            <End Role="accountTypeLookup" EntitySet="accountTypeLookups" />
-            <End Role="account" EntitySet="accounts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_addressTypeLookup" Association="Self.FK_customerAddress_addressTypeLookup">
-            <End Role="addressTypeLookup" EntitySet="addressTypeLookups" />
-            <End Role="customerAddress" EntitySet="customerAddresses" />
           </AssociationSet>
           <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
             <End Role="Payee" EntitySet="Payees" />
             <End Role="billPay" EntitySet="billPays" />
           </AssociationSet>
-          <AssociationSet Name="fk_PeriodCode_BPAy" Association="Self.fk_PeriodCode_BPAy">
-            <End Role="periodLookup" EntitySet="periodLookups" />
-            <End Role="billPay" EntitySet="billPays" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_customer" Association="Self.FK_customerAddress_customer">
-            <End Role="customer" EntitySet="customers" />
-            <End Role="customerAddress" EntitySet="customerAddresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerPhoneNumber_customerID" Association="Self.FK_customerPhoneNumber_customerID">
-            <End Role="customer" EntitySet="customers" />
-            <End Role="customerPhoneNumber" EntitySet="customerPhoneNumbers" />
-          </AssociationSet>
           <AssociationSet Name="FK_login_customerID" Association="Self.FK_login_customerID">
-            <End Role="customer" EntitySet="customers" />
-            <End Role="login" EntitySet="logins" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerAddress_StateLookup" Association="Self.FK_customerAddress_StateLookup">
-            <End Role="StateLookup" EntitySet="StateLookups" />
-            <End Role="customerAddress" EntitySet="customerAddresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_customerPhoneNumber_phoneTypeLookup" Association="Self.FK_customerPhoneNumber_phoneTypeLookup">
-            <End Role="phoneTypeLookup" EntitySet="phoneTypeLookups" />
-            <End Role="customerPhoneNumber" EntitySet="customerPhoneNumbers" />
+            <End EntitySet="customers" Role="customer" />
+            <End EntitySet="logins" Role="login" />
           </AssociationSet>
           <EntitySet Name="transactions" EntityType="NWABModel.transaction" />
           <AssociationSet Name="FK_transaction_account" Association="NWABModel.FK_transaction_account">
@@ -689,9 +317,9 @@
             <End Role="account" EntitySet="accounts" />
             <End Role="transaction" EntitySet="transactions" />
           </AssociationSet>
-          <AssociationSet Name="FK_transaction_transactionTypeLookup" Association="NWABModel.FK_transaction_transactionTypeLookup">
-            <End Role="transactionTypeLookup" EntitySet="transactionTypeLookups" />
-            <End Role="transaction" EntitySet="transactions" />
+          <AssociationSet Name="fk_Payee_BPAY1" Association="NWABModel.fk_Payee_BPAY1">
+            <End Role="account" EntitySet="accounts" />
+            <End Role="billPay" EntitySet="billPays" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="transaction">
@@ -707,7 +335,7 @@
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="account" Relationship="NWABModel.FK_transaction_account" FromRole="transaction" ToRole="account" />
           <NavigationProperty Name="account1" Relationship="NWABModel.FK_transaction_account1" FromRole="transaction" ToRole="account" />
-          <NavigationProperty Name="transactionTypeLookup" Relationship="NWABModel.FK_transaction_transactionTypeLookup" FromRole="transaction" ToRole="transactionTypeLookup" />
+          <Property Name="transactionTypeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_transaction_account">
           <End Type="NWABModel.account" Role="account" Multiplicity="1" />
@@ -733,15 +361,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_transaction_transactionTypeLookup">
-          <End Type="NWABModel.transactionTypeLookup" Role="transactionTypeLookup" Multiplicity="1" />
-          <End Type="NWABModel.transaction" Role="transaction" Multiplicity="*" />
+        <Association Name="fk_Payee_BPAY1">
+          <End Type="NWABModel.account" Role="account" Multiplicity="1" />
+          <End Type="NWABModel.billPay" Role="billPay" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="transactionTypeLookup">
-              <PropertyRef Name="transactionTypeID" />
+            <Principal Role="account">
+              <PropertyRef Name="accountNumber" />
             </Principal>
-            <Dependent Role="transaction">
-              <PropertyRef Name="transactionType" />
+            <Dependent Role="billPay">
+              <PropertyRef Name="accountNum" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -761,22 +389,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="accountTypeLookups">
-            <EntityTypeMapping TypeName="NWABModel.accountTypeLookup">
-              <MappingFragment StoreEntitySet="accountTypeLookup">
-                <ScalarProperty Name="accountTypeCode" ColumnName="accountTypeCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="addressTypeLookups">
-            <EntityTypeMapping TypeName="NWABModel.addressTypeLookup">
-              <MappingFragment StoreEntitySet="addressTypeLookup">
-                <ScalarProperty Name="addressTypeCode" ColumnName="addressTypeCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="billPays">
             <EntityTypeMapping TypeName="NWABModel.billPay">
               <MappingFragment StoreEntitySet="billPay">
@@ -793,36 +405,18 @@
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="NWABModel.customer">
               <MappingFragment StoreEntitySet="customer">
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+                <ScalarProperty Name="postalCode" ColumnName="postalCode" />
+                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="suburb" ColumnName="suburb" />
+                <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
+                <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
                 <ScalarProperty Name="custID" ColumnName="custID" />
                 <ScalarProperty Name="custName" ColumnName="custName" />
                 <ScalarProperty Name="TFN" ColumnName="TFN" />
                 <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="customerAddresses">
-            <EntityTypeMapping TypeName="NWABModel.customerAddress">
-              <MappingFragment StoreEntitySet="customerAddress">
-                <ScalarProperty Name="pkID" ColumnName="pkID" />
-                <ScalarProperty Name="custID" ColumnName="custID" />
-                <ScalarProperty Name="addressline1" ColumnName="addressline1" />
-                <ScalarProperty Name="addressline2" ColumnName="addressline2" />
-                <ScalarProperty Name="city" ColumnName="city" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="country" ColumnName="country" />
-                <ScalarProperty Name="postcode" ColumnName="postcode" />
-                <ScalarProperty Name="addressTypeCode" ColumnName="addressTypeCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="customerPhoneNumbers">
-            <EntityTypeMapping TypeName="NWABModel.customerPhoneNumber">
-              <MappingFragment StoreEntitySet="customerPhoneNumber">
-                <ScalarProperty Name="pkID" ColumnName="pkID" />
-                <ScalarProperty Name="custID" ColumnName="custID" />
-                <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
-                <ScalarProperty Name="phoneTypeCode" ColumnName="phoneTypeCode" />
-                <ScalarProperty Name="silent" ColumnName="silent" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -849,43 +443,10 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="periodLookups">
-            <EntityTypeMapping TypeName="NWABModel.periodLookup">
-              <MappingFragment StoreEntitySet="periodLookup">
-                <ScalarProperty Name="periodCode" ColumnName="periodCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="phoneTypeLookups">
-            <EntityTypeMapping TypeName="NWABModel.phoneTypeLookup">
-              <MappingFragment StoreEntitySet="phoneTypeLookup">
-                <ScalarProperty Name="phoneTypeCode" ColumnName="phoneTypeCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StateLookups">
-            <EntityTypeMapping TypeName="NWABModel.StateLookup">
-              <MappingFragment StoreEntitySet="StateLookup">
-                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="transactionTypeLookups">
-            <EntityTypeMapping TypeName="NWABModel.transactionTypeLookup">
-              <MappingFragment StoreEntitySet="transactionTypeLookup">
-                <ScalarProperty Name="transactionTypeID" ColumnName="transactionTypeID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="fee" ColumnName="fee" />
-                <ScalarProperty Name="typeCode" ColumnName="typeCode" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="transactions">
             <EntityTypeMapping TypeName="NWABModel.transaction">
               <MappingFragment StoreEntitySet="transaction">
+                <ScalarProperty Name="transactionTypeCode" ColumnName="transactionTypeCode" />
                 <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
                 <ScalarProperty Name="comment" ColumnName="comment" />
                 <ScalarProperty Name="amount" ColumnName="amount" />

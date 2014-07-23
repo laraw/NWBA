@@ -17,18 +17,22 @@ namespace NWBA.Models
         public customer()
         {
             this.accounts = new HashSet<account>();
-            this.customerAddresses = new HashSet<customerAddress>();
-            this.customerPhoneNumbers = new HashSet<customerPhoneNumber>();
         }
     
         public int custID { get; set; }
         public string custName { get; set; }
         public string TFN { get; set; }
         public System.DateTime dateCreated { get; set; }
+        public string addressLine1 { get; set; }
+        public string addressLine2 { get; set; }
+        public string suburb { get; set; }
+        public string state { get; set; }
+        public string postalCode { get; set; }
+        public string phoneNumber { get; set; }
+        public string mobile { get; set; }
+        public string email { get; set; }
     
         public virtual ICollection<account> accounts { get; set; }
-        public virtual ICollection<customerAddress> customerAddresses { get; set; }
-        public virtual ICollection<customerPhoneNumber> customerPhoneNumbers { get; set; }
         public virtual login login { get; set; }
     }
 }

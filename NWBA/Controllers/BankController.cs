@@ -15,13 +15,9 @@ namespace NWBA.Controllers
         //
         
 
-        /// <summary>
-        /// User manager - attached to application DB context
-        /// </summary>
         protected UserManager<ApplicationUser> UserManager { get; set; }
         protected ApplicationDbContext ApplicationDbContext { get; set; }
-        // GET: /Bank/
-
+        
         public BankController()
         {
             this.ApplicationDbContext = new ApplicationDbContext();

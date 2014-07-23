@@ -23,6 +23,6 @@ namespace NWBA.Models
         public System.DateTime modifyDate { get; set; }
     
         public virtual Payee Payee { get; set; }
-        public virtual periodLookup periodLookup { get; set; }
+        public virtual account account { get; set; }
     }
 }

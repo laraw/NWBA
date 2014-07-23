@@ -26,18 +26,10 @@ namespace NWBA.Models
         }
     
         public virtual DbSet<account> accounts { get; set; }
-        public virtual DbSet<accountTypeLookup> accountTypeLookups { get; set; }
-        public virtual DbSet<addressTypeLookup> addressTypeLookups { get; set; }
         public virtual DbSet<billPay> billPays { get; set; }
         public virtual DbSet<customer> customers { get; set; }
-        public virtual DbSet<customerAddress> customerAddresses { get; set; }
-        public virtual DbSet<customerPhoneNumber> customerPhoneNumbers { get; set; }
         public virtual DbSet<login> logins { get; set; }
         public virtual DbSet<Payee> Payees { get; set; }
-        public virtual DbSet<periodLookup> periodLookups { get; set; }
-        public virtual DbSet<phoneTypeLookup> phoneTypeLookups { get; set; }
-        public virtual DbSet<StateLookup> StateLookups { get; set; }
-        public virtual DbSet<transactionTypeLookup> transactionTypeLookups { get; set; }
         public virtual DbSet<transaction> transactions { get; set; }
     }
 }

@@ -43,11 +43,7 @@ namespace NWBA.Controllers
                 }
                 else {                 
                     cust = db.customers.Find(custID);
-                }
-                ICollection<customerAddress> custaddress = cust.customerAddresses;
-                ICollection<customerPhoneNumber> custPhoneNumber = cust.customerPhoneNumbers;
-                ViewBag.CustomerAddresses = custaddress;
-                ViewBag.CustomerPhoneNumbers = custPhoneNumber;
+                }                
                 
                 return View(cust);
             }
@@ -69,7 +65,7 @@ namespace NWBA.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             customer customer = db.customers.Find(custID);
-            customerAddress custaddress = db.customerAddresses.Find(custID);
+          
 
             if (customer == null)
             {
@@ -82,14 +78,16 @@ namespace NWBA.Controllers
      
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="custID,custName,TFN")] customer customer)
+        public ActionResult Edit([Bind(Include="custID,custName,TFN,addressLine1,addressLine2,suburb,state,postalCode,phoneNumber,mobile,email")] 
+            customer customer, FormCollection form)
         {
-            
+
+                
             if (ModelState.IsValid)
             {
                 db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details");
             }
             ViewBag.custID = new SelectList(db.logins, "custID", "userid", customer.custID);
             return View(customer);

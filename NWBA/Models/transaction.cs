@@ -21,9 +21,9 @@ namespace NWBA.Models
         public double amount { get; set; }
         public string comment { get; set; }
         public System.DateTime modifyDate { get; set; }
+        public string transactionTypeCode { get; set; }
     
         public virtual account account { get; set; }
         public virtual account account1 { get; set; }
-        public virtual transactionTypeLookup transactionTypeLookup { get; set; }
     }
 }

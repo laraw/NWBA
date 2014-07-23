@@ -9,44 +9,98 @@
 
 <div>
 	<hr />
+    <h4>Customer Information</h4>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.custName)
+            Name
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.custName)
+            @Model.custName
+        </dd>
+        <dt>
+            TFN
+        </dt>
+        <dd>
+            @Model.TFN
+        </dd>
+    </dl>
+    </div>
+<div>
+
+    <h4> Address Information </h4>
+    <dl class="dl-horizontal">
+        <dt>
+            Address Line 1
+        </dt>
+        <dd>
+            @Model.addressLine1
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TFN)
+            Address Line 2
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.TFN)
+            @Model.addressLine2
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.dateCreated)
+            Suburb
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.dateCreated)
+            @Model.suburb
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.login.userid)
+            State
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.login.userid)
+            @Model.state
+        </dd>
+
+        <dt>
+            Postal Code
+        </dt>
+        <dd>
+            @Model.postalCode
+        </dd>
+</dl>
+    </div>
+<div>
+
+    <h4> Contact Information</h4>
+<dl class="dl-horizontal">
+
+        <dt>
+            Phone Number
+        </dt>
+        <dd>
+            @Model.phoneNumber
+        </dd>
+
+        <dt>
+            Mobile
+        </dt>
+        <dd>
+            @Model.mobile
+        </dd>
+
+        <dt>
+            E-mail
+        </dt>
+        <dd>
+            @Model.email
+        </dd>
+    </dl>
+    </div>
+       
+      <dl class="dl-horizontal" >  
+        <dd>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.custID })
+
         </dd>
 
     </dl>
-</div>
 
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.custID }) 
 
-</p>

@@ -18,6 +18,7 @@ namespace NWBA.Models
         {
             this.transactions = new HashSet<transaction>();
             this.transactions1 = new HashSet<transaction>();
+            this.billPays = new HashSet<billPay>();
         }
     
         public int accountNumber { get; set; }
@@ -26,8 +27,8 @@ namespace NWBA.Models
         public System.DateTime modifyDate { get; set; }
     
         public virtual customer customer { get; set; }
-        public virtual accountTypeLookup accountTypeLookup { get; set; }
         public virtual ICollection<transaction> transactions { get; set; }
         public virtual ICollection<transaction> transactions1 { get; set; }
+        public virtual ICollection<billPay> billPays { get; set; }
     }
 }
