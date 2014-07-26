@@ -47,19 +47,7 @@ namespace NWBA.Controllers
               // GET: /Customer/Edit/5
         public ActionResult Edit()
         {
-            //int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
-            //if (custID == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //customer customer = db.customers.Find(custID);
             
-            //if (customer == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(customer);
-
             int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
             customer cust = new customer();
             if (custID == null)
@@ -78,10 +66,7 @@ namespace NWBA.Controllers
 
      
         [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        //public ActionResult Edit([Bind(Include = "custID,custName,TFN,addressLine1,addressLine2,suburb,state,postalCode,phoneNumber,mobile,email")] 
-        //    customer customer, FormCollection form)
+        [ValidateAntiForgeryToken]       
         public ActionResult Edit(CustomerView customer)
         {
             if (ModelState.IsValid)

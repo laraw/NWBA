@@ -23,6 +23,8 @@ namespace NWBA.Controllers
         protected customer cust { get; set; }
 
         private NWABEntities db = new NWABEntities();
+
+        private StatementView stateview;
         
         public BankController()
         {
@@ -38,14 +40,24 @@ namespace NWBA.Controllers
         }
 
         [HttpGet]
-        public ActionResult Statement(StatementView statementview, string accountType)
+        public ActionResult Statement()
         {
-            var transactions = from t in statementview.transactions
-                               join a in statementview.accounts on t.accountNum equals a.accountNumber
-                               where a.accountTypeCode.Equals(accountType)
-                               select t;
-
-            return View(transactions.ToList());
+            int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
+            
+            if (custID == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+             
+            else
+            {
+                stateview = new StatementView();
+                stateview.transactions = from t in db.transactions
+                                         join a in db.accounts on t.accountNum equals a.accountNumber
+                                         where a.custID.Equals(custID) && a.accountTypeCode.Equals(stateview.accountTypes.SelectedValue)
+            }
+            
+            return View(stateview);
         }
 
         public ActionResult Transaction()
@@ -72,24 +84,14 @@ namespace NWBA.Controllers
             }
         }
 
-        protected StatementView ViewModelFromModel(string accountType)
+        protected void ViewModelFromModel(string accountType)
         {
-
-            NWABEntities ent = new NWABEntities();
             int? custid = UserManager.FindById(User.Identity.GetUserId()).custID;
-            customer cust = ent.customers.Find(custid);
-            ICollection<account> accounts = cust.accounts;
             
+            ICollection<transaction> savingstransactions = 
 
             StatementView vm = new StatementView();
-            vm.accounts = accounts;
-            vm.custID = cust.custID;
-            
-
-            return vm;
-            
         }
-
-       
+               
 	}
 }

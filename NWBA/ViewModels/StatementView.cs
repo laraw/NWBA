@@ -11,16 +11,14 @@ namespace NWBA.ViewModels
 {
     public class StatementView
     {
-        public int custID { get; set; }
-        public virtual ICollection<transaction> transactions { get; set; }
-        public virtual ICollection<account> accounts { get; set; }        
+        public virtual ICollection<transaction> transactions { get; set; }    
         public SelectList accountTypes { get; set; }
-        public double savingsBalance { get; set; }
-        public double chequeBalance { get; set; }
-        public double currentBalance { get; set; }
+
+        public double balance { get; set; }
         public StatementView()
         {
             setAccountTypes();
+            this.balance = 0.00;
         }
        
 
