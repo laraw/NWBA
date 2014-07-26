@@ -1,0 +1,92 @@
+﻿@model NWBA.Models.customer
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Your Profile</h2>
+
+<div>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Model.custName
+        </dd>
+        <dt>
+            TFN
+        </dt>
+        <dd>
+            @Model.TFN
+        </dd>
+
+        @*<dt>
+            Date Created
+        </dt>
+        <dd>
+            @Model.dateCreated
+        </dd>*@
+         @foreach (var item in Model.customerPhoneNumbers)
+         {
+             if (item.phoneTypeCode == 1)
+             {
+                 <dt>Home #</dt>
+             }
+             else if (item.phoneTypeCode == 2)
+             {
+                 <dt>Work #</dt>
+             }
+             else if (item.phoneTypeCode == 3)
+             {
+                 <dt>Mobile #</dt>
+             }
+             else if (item.phoneTypeCode == 4)
+             {
+                 <dt>Fax #</dt>
+             }
+             else if (item.phoneTypeCode == 5)
+             {
+                 <dt>Email</dt>
+             }
+             <dd>
+                 @item.phoneNumber
+                 @if (item.silent)
+                 {
+                     @:(Silent)
+                 }
+             </dd>
+         }
+         @foreach (var item in Model.customerAddresses)
+         {
+             if (item.addressTypeCode == 1)
+             {
+                 <dt>Mailing Address</dt>
+             }
+             else if (item.addressTypeCode == 2)
+             {
+                 <dt>Billing Address</dt>
+             }
+             <dd>
+                 @item.addressline1<br/>
+                 @if (item.addressline2 != null)
+                 {
+                    @item.addressline2 <br/>  
+                 }
+                    
+                 @item.city, @item.state<br/> @item.country, @item.postcode <br /> 
+             </dd>
+         }
+        <dd>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.custID })
+
+        </dd>
+
+    </dl>
+
+</div>
+
+
