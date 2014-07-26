@@ -1,0 +1,70 @@
+﻿@model IEnumerable<NWBA.Models.transaction>
+
+@{
+    ViewBag.Title = "View1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View1</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.transactionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.modifyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.account.accountTypeCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.account1.accountTypeCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.transactiontypeCode1.description)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.transactionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.amount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.modifyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.account.accountTypeCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.account1.accountTypeCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.transactiontypeCode1.description)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.transactionID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.transactionID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.transactionID })
+        </td>
+    </tr>
+}
+
+</table>

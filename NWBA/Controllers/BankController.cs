@@ -41,22 +41,22 @@ namespace NWBA.Controllers
         public ActionResult Statement()
         {
             int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
-            
+
+            stateview = new StatementView();
+
             if (custID == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
              
             else
-            {
-                
-                stateview = new StatementView();
+            {                
                 if(stateview.accountTypes.SelectedValue.Equals("C") || stateview.accountTypes.SelectedValue.Equals("S")) {
                     stateview.transactions = from t in db.transactions
                                              join a in db.accounts on t.accountNum equals a.accountNumber
                                              where a.custID.Equals(custID) && a.accountTypeCode.Equals(stateview.accountTypes.SelectedValue)
                                              select t;
-
+                    return View(stateview);
 
                     //foreach(transaction t in transactions) {
                     //    if(t.transactionType.Equals("D")) {
@@ -74,6 +74,11 @@ namespace NWBA.Controllers
             }
             
             return View(stateview);
+        }
+
+        public PartialViewResult ListTransactions()
+        {
+            return PartialView();
         }
 
         public ActionResult Transaction()
