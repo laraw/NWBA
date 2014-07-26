@@ -19,9 +19,7 @@ namespace NWBA.Controllers
     {
         protected UserManager<ApplicationUser> UserManager { get; set; }
         protected ApplicationDbContext ApplicationDbContext { get; set; }
-
-        protected customer cust { get; set; }
-
+        
         private NWABEntities db = new NWABEntities();
 
         private StatementView stateview;
@@ -30,7 +28,7 @@ namespace NWBA.Controllers
         {
             this.ApplicationDbContext = new ApplicationDbContext();
             this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
-            int? custID = UserManager.FindById(User.Identity.GetUserId()).custID;
+            
             
         }
         public ActionResult Index()
@@ -51,10 +49,28 @@ namespace NWBA.Controllers
              
             else
             {
+                
                 stateview = new StatementView();
-                stateview.transactions = from t in db.transactions
-                                         join a in db.accounts on t.accountNum equals a.accountNumber
-                                         where a.custID.Equals(custID) && a.accountTypeCode.Equals(stateview.accountTypes.SelectedValue)
+                if(stateview.accountTypes.SelectedValue.Equals("C") || stateview.accountTypes.SelectedValue.Equals("S")) {
+                    stateview.transactions = from t in db.transactions
+                                             join a in db.accounts on t.accountNum equals a.accountNumber
+                                             where a.custID.Equals(custID) && a.accountTypeCode.Equals(stateview.accountTypes.SelectedValue)
+                                             select t;
+
+
+                    //foreach(transaction t in transactions) {
+                    //    if(t.transactionType.Equals("D")) {
+                    //       stateview.balance = stateview.balance + t.amount;
+                    //    }
+                    
+                    //    else {
+                    //        stateview.balance = stateview.balance - t.amount;
+                    //    }
+
+                        //stateview.transactions = transactions;
+                }
+                
+                
             }
             
             return View(stateview);
@@ -86,11 +102,11 @@ namespace NWBA.Controllers
 
         protected void ViewModelFromModel(string accountType)
         {
-            int? custid = UserManager.FindById(User.Identity.GetUserId()).custID;
+            //int? custid = UserManager.FindById(User.Identity.GetUserId()).custID;
             
-            ICollection<transaction> savingstransactions = 
+            //ICollection<transaction> savingstransactions = 
 
-            StatementView vm = new StatementView();
+            //StatementView vm = new StatementView();
         }
                
 	}

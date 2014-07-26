@@ -11,7 +11,7 @@ namespace NWBA.ViewModels
 {
     public class StatementView
     {
-        public virtual ICollection<transaction> transactions { get; set; }    
+        public virtual IQueryable<transaction> transactions { get; set; }    
         public SelectList accountTypes { get; set; }
 
         public double balance { get; set; }
