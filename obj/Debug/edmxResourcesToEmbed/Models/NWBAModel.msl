@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="NWABModelStoreContainer" CdmEntityContainer="NWABEntities">
+    <EntitySetMapping Name="accounts">
+      <EntityTypeMapping TypeName="NWABModel.account">
+        <MappingFragment StoreEntitySet="account">
+          <ScalarProperty Name="accountNumber" ColumnName="accountNumber" />
+          <ScalarProperty Name="accountTypeCode" ColumnName="accountTypeCode" />
+          <ScalarProperty Name="custID" ColumnName="custID" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="billPays">
+      <EntityTypeMapping TypeName="NWABModel.billPay">
+        <MappingFragment StoreEntitySet="billPay">
+          <ScalarProperty Name="billPayID" ColumnName="billPayID" />
+          <ScalarProperty Name="accountNum" ColumnName="accountNum" />
+          <ScalarProperty Name="payeeID" ColumnName="payeeID" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="scheduleDate" ColumnName="scheduleDate" />
+          <ScalarProperty Name="periodCode" ColumnName="periodCode" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="customers">
+      <EntityTypeMapping TypeName="NWABModel.customer">
+        <MappingFragment StoreEntitySet="customer">
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="mobile" ColumnName="mobile" />
+          <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
+          <ScalarProperty Name="postalCode" ColumnName="postalCode" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="suburb" ColumnName="suburb" />
+          <ScalarProperty Name="addressLine2" ColumnName="addressLine2" />
+          <ScalarProperty Name="addressLine1" ColumnName="addressLine1" />
+          <ScalarProperty Name="custID" ColumnName="custID" />
+          <ScalarProperty Name="custName" ColumnName="custName" />
+          <ScalarProperty Name="TFN" ColumnName="TFN" />
+          <ScalarProperty Name="dateCreated" ColumnName="dateCreated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Payees">
+      <EntityTypeMapping TypeName="NWABModel.Payee">
+        <MappingFragment StoreEntitySet="Payee">
+          <ScalarProperty Name="payeeID" ColumnName="payeeID" />
+          <ScalarProperty Name="payeeName" ColumnName="payeeName" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="city" ColumnName="city" />
+          <ScalarProperty Name="state" ColumnName="state" />
+          <ScalarProperty Name="bPayCode" ColumnName="bPayCode" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="transactions">
+      <EntityTypeMapping TypeName="NWABModel.transaction">
+        <MappingFragment StoreEntitySet="transaction">
+          <ScalarProperty Name="transactionTypeCode" ColumnName="transactionTypeCode" />
+          <ScalarProperty Name="modifyDate" ColumnName="modifyDate" />
+          <ScalarProperty Name="comment" ColumnName="comment" />
+          <ScalarProperty Name="amount" ColumnName="amount" />
+          <ScalarProperty Name="destAccoutNum" ColumnName="destAccoutNum" />
+          <ScalarProperty Name="accountNum" ColumnName="accountNum" />
+          <ScalarProperty Name="transactionType" ColumnName="transactionType" />
+          <ScalarProperty Name="transactionID" ColumnName="transactionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="transactiontypeCodes">
+      <EntityTypeMapping TypeName="NWABModel.transactiontypeCode">
+        <MappingFragment StoreEntitySet="transactiontypeCode">
+          <ScalarProperty Name="feeAUD" ColumnName="feeAUD" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="code" ColumnName="code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

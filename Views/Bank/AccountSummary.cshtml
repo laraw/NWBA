@@ -1,0 +1,45 @@
+﻿@model IEnumerable<NWBA.Models.account>
+
+@{
+    ViewBag.Title = "AccountSummary";
+    Layout = null;
+}
+
+
+    @*<p>
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
+@*<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.accountTypeCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.modifyDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.customer.custName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.accountTypeCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.modifyDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.customer.custName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.accountNumber }) |
+            @Html.ActionLink("Details", "Details", new { id=item.accountNumber }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.accountNumber })
+        </td>
+    </tr>
+}
+
+</table>*@

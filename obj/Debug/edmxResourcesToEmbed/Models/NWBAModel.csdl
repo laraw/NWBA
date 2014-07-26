@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NWABModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="account">
+    <Key>
+      <PropertyRef Name="accountNumber" />
+    </Key>
+    <Property Name="accountNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="accountTypeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="custID" Type="Int32" Nullable="false" />
+    <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="customer" Relationship="Self.FK_account_custID" FromRole="account" ToRole="customer" />
+    <NavigationProperty Name="transactions" Relationship="NWABModel.FK_transaction_account" FromRole="account" ToRole="transaction" />
+    <NavigationProperty Name="transactions1" Relationship="NWABModel.FK_transaction_account1" FromRole="account" ToRole="transaction" />
+    <NavigationProperty Name="billPays" Relationship="NWABModel.fk_Payee_BPAY1" FromRole="account" ToRole="billPay" />
+  </EntityType>
+  <EntityType Name="billPay">
+    <Key>
+      <PropertyRef Name="billPayID" />
+    </Key>
+    <Property Name="billPayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="accountNum" Type="Int32" Nullable="false" />
+    <Property Name="payeeID" Type="Int32" Nullable="false" />
+    <Property Name="amount" Type="Double" Nullable="false" />
+    <Property Name="scheduleDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="periodCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Payee" Relationship="Self.fk_Payee_BPAY" FromRole="billPay" ToRole="Payee" />
+    <NavigationProperty Name="account" Relationship="NWABModel.fk_Payee_BPAY1" FromRole="billPay" ToRole="account" />
+  </EntityType>
+  <EntityType Name="customer">
+    <Key>
+      <PropertyRef Name="custID" />
+    </Key>
+    <Property Name="custID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="custName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TFN" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
+    <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="accounts" Relationship="Self.FK_account_custID" FromRole="customer" ToRole="account" />
+    <Property Name="addressLine1" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="addressLine2" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="suburb" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="state" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+    <Property Name="postalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="phoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="mobile" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Payee">
+    <Key>
+      <PropertyRef Name="payeeID" />
+    </Key>
+    <Property Name="payeeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="payeeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="city" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="state" Type="String" MaxLength="3" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="bPayCode" Type="Int32" Nullable="false" />
+    <Property Name="phone" Type="String" MaxLength="12" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="billPays" Relationship="Self.fk_Payee_BPAY" FromRole="Payee" ToRole="billPay" />
+  </EntityType>
+  <Association Name="FK_account_custID">
+    <End Role="customer" Type="Self.customer" Multiplicity="1" />
+    <End Role="account" Type="Self.account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="custID" />
+      </Principal>
+      <Dependent Role="account">
+        <PropertyRef Name="custID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Payee_BPAY">
+    <End Role="Payee" Type="Self.Payee" Multiplicity="1" />
+    <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Payee">
+        <PropertyRef Name="payeeID" />
+      </Principal>
+      <Dependent Role="billPay">
+        <PropertyRef Name="payeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NWABEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="accounts" EntityType="Self.account" />
+    <EntitySet Name="billPays" EntityType="Self.billPay" />
+    <EntitySet Name="customers" EntityType="Self.customer" />
+    <EntitySet Name="Payees" EntityType="Self.Payee" />
+    <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
+      <End Role="customer" EntitySet="customers" />
+      <End Role="account" EntitySet="accounts" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
+      <End Role="Payee" EntitySet="Payees" />
+      <End Role="billPay" EntitySet="billPays" />
+    </AssociationSet>
+    <EntitySet Name="transactions" EntityType="NWABModel.transaction" />
+    <AssociationSet Name="FK_transaction_account" Association="NWABModel.FK_transaction_account">
+      <End Role="account" EntitySet="accounts" />
+      <End Role="transaction" EntitySet="transactions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transaction_account1" Association="NWABModel.FK_transaction_account1">
+      <End Role="account" EntitySet="accounts" />
+      <End Role="transaction" EntitySet="transactions" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Payee_BPAY1" Association="NWABModel.fk_Payee_BPAY1">
+      <End Role="account" EntitySet="accounts" />
+      <End Role="billPay" EntitySet="billPays" />
+    </AssociationSet>
+    <EntitySet Name="transactiontypeCodes" EntityType="NWABModel.transactiontypeCode" />
+    <AssociationSet Name="FK_transaction_transactiontypeCode" Association="NWABModel.FK_transaction_transactiontypeCode">
+      <End Role="transactiontypeCode" EntitySet="transactiontypeCodes" />
+      <End Role="transaction" EntitySet="transactions" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="transaction">
+    <Key>
+      <PropertyRef Name="transactionID" />
+    </Key>
+    <Property Name="transactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="transactionType" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+    <Property Name="accountNum" Type="Int32" Nullable="false" />
+    <Property Name="destAccoutNum" Type="Int32" />
+    <Property Name="amount" Type="Double" Nullable="false" />
+    <Property Name="comment" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+    <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="account" Relationship="NWABModel.FK_transaction_account" FromRole="transaction" ToRole="account" />
+    <NavigationProperty Name="account1" Relationship="NWABModel.FK_transaction_account1" FromRole="transaction" ToRole="account" />
+    <Property Name="transactionTypeCode" Type="Int32" />
+    <NavigationProperty Name="transactiontypeCode1" Relationship="NWABModel.FK_transaction_transactiontypeCode" FromRole="transaction" ToRole="transactiontypeCode" />
+  </EntityType>
+  <Association Name="FK_transaction_account">
+    <End Type="NWABModel.account" Role="account" Multiplicity="1" />
+    <End Type="NWABModel.transaction" Role="transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="accountNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transaction_account1">
+    <End Type="NWABModel.account" Role="account" Multiplicity="0..1" />
+    <End Type="NWABModel.transaction" Role="transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="destAccoutNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Payee_BPAY1">
+    <End Type="NWABModel.account" Role="account" Multiplicity="1" />
+    <End Type="NWABModel.billPay" Role="billPay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="billPay">
+        <PropertyRef Name="accountNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="transactiontypeCode">
+    <Key>
+      <PropertyRef Name="code" />
+    </Key>
+    <Property Name="code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="description" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="feeAUD" Type="Double" Nullable="false" />
+    <NavigationProperty Name="transactions" Relationship="NWABModel.FK_transaction_transactiontypeCode" FromRole="transactiontypeCode" ToRole="transaction" />
+  </EntityType>
+  <Association Name="FK_transaction_transactiontypeCode">
+    <End Type="NWABModel.transactiontypeCode" Role="transactiontypeCode" Multiplicity="0..1" />
+    <End Type="NWABModel.transaction" Role="transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="transactiontypeCode">
+        <PropertyRef Name="code" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="transactionTypeCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

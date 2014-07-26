@@ -1,0 +1,106 @@
+﻿@model NWBA.ViewModels.CustomerView
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Your Profile</h2>
+
+<div>
+	<hr />
+    <h4>Customer Information</h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.custName)
+        </dt>
+
+        <dd>
+            @Model.custName
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TFN)
+        </dt>
+        <dd>
+            @Model.TFN
+        </dd>
+    </dl>
+    </div>
+<div>
+
+    <h4> Address Information </h4>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.addressLine1)
+        </dt>
+        <dd>
+            @Model.addressLine1
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.addressLine2)
+        </dt>
+        <dd>
+            @Model.addressLine2
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.suburb)
+        </dt>
+        <dd>
+            @Model.suburb
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.state)
+        </dt>
+        <dd>
+            @Model.state
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.postalCode)
+        </dt>
+        <dd>
+            @Model.postalCode
+        </dd>
+</dl>
+    </div>
+<div>
+
+    <h4> Contact Information</h4>
+<dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phoneNumber)
+        </dt>
+        <dd>
+            @Model.phoneNumber
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.mobile)
+        </dt>
+        <dd>
+            @Model.mobile
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+        <dd>
+            @Model.email
+        </dd>
+    </dl>
+    </div>
+       
+      <dl class="dl-horizontal" >  
+        <dd>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.custID })
+
+        </dd>
+
+    </dl>
+
+
+

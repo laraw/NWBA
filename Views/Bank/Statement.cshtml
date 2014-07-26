@@ -1,0 +1,18 @@
+﻿@model NWBA.ViewModels.StatementView
+
+@{
+    ViewBag.Title = "Statement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Statement For</h2>
+@Html.Action("Summary","Customer")
+
+
+@using (Html.BeginForm())
+ { 
+    <p>
+        Select Account Type: @Html.DropDownListFor(model => model.accountTypes, Model.accountTypes)
+        <input type="submit" value="Filter" />
+    </p>
+}

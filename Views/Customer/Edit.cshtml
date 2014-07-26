@@ -1,0 +1,117 @@
+﻿@model NWBA.ViewModels.CustomerView
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Your Profile    </h4>
+        <hr />
+        <h4>Customer Information</h4>
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.custID)
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.custName, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.custName)
+                @Html.ValidationMessageFor(model => model.custName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TFN, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TFN)
+                @Html.ValidationMessageFor(model => model.TFN)
+            </div>
+        </div>
+
+      
+        <h4>Address Information </h4>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.addressLine1, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.addressLine1)
+                @Html.ValidationMessageFor(model => model.addressLine1)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.addressLine2, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.addressLine2)
+                @Html.ValidationMessageFor(model => model.addressLine2)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.suburb, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.suburb)
+                @Html.ValidationMessageFor(model => model.suburb)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.state, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.DropDownList("State");*@
+                @*@Html.DropDownList("States", model.state)*@
+               @Html.DropDownListFor(model => model.state, Model.states)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.postalCode, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.postalCode)
+                @Html.ValidationMessageFor(model => model.postalCode)
+            </div>
+        </div>
+
+     
+
+        <h4> Contact Information </h4>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.phoneNumber, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.phoneNumber)
+                @Html.ValidationMessageFor(model => model.phoneNumber)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.mobile, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.mobile)
+                @Html.ValidationMessageFor(model => model.mobile)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.email)
+                @Html.ValidationMessageFor(model => model.email)
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default"  />
+            </div>
+        </div>
+    </div>
+}
+
+

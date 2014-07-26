@@ -1,0 +1,17 @@
+﻿@model NWBA.Models.customer
+@{
+    ViewBag.Title = "Summary";
+    Layout = null;
+}
+
+
+<div>
+    <p> For:  @Html.DisplayFor(model => model.custName)
+    </p>
+    <p> Email Address:
+            @Html.DisplayFor(model => model.email)
+        </p>
+
+</div>
+
+        

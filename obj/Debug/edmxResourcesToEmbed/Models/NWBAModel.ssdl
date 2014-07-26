@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="NWABModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="account">
+    <Key>
+      <PropertyRef Name="accountNumber" />
+    </Key>
+    <Property Name="accountNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="accountTypeCode" Type="nvarchar" MaxLength="1" Nullable="false" />
+    <Property Name="custID" Type="int" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="billPay">
+    <Key>
+      <PropertyRef Name="billPayID" />
+    </Key>
+    <Property Name="billPayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="accountNum" Type="int" Nullable="false" />
+    <Property Name="payeeID" Type="int" Nullable="false" />
+    <Property Name="amount" Type="float" Nullable="false" />
+    <Property Name="scheduleDate" Type="datetime" Nullable="false" />
+    <Property Name="periodCode" Type="nvarchar" MaxLength="1" Nullable="false" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="customer">
+    <Key>
+      <PropertyRef Name="custID" />
+    </Key>
+    <Property Name="custID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="custName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="TFN" Type="nvarchar" MaxLength="11" />
+    <Property Name="dateCreated" Type="date" Nullable="false" />
+    <Property Name="addressLine1" Type="nvarchar" MaxLength="300" />
+    <Property Name="addressLine2" Type="nvarchar" MaxLength="300" />
+    <Property Name="suburb" Type="nvarchar" MaxLength="150" />
+    <Property Name="state" Type="nvarchar" MaxLength="5" />
+    <Property Name="postalCode" Type="nvarchar" MaxLength="10" />
+    <Property Name="phoneNumber" Type="nvarchar" MaxLength="12" />
+    <Property Name="mobile" Type="nvarchar" MaxLength="12" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Payee">
+    <Key>
+      <PropertyRef Name="payeeID" />
+    </Key>
+    <Property Name="payeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="payeeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="address" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="city" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="state" Type="nvarchar" MaxLength="3" Nullable="false" />
+    <Property Name="bPayCode" Type="int" Nullable="false" />
+    <Property Name="phone" Type="nvarchar" MaxLength="12" Nullable="false" />
+  </EntityType>
+  <EntityType Name="transaction">
+    <Key>
+      <PropertyRef Name="transactionID" />
+    </Key>
+    <Property Name="transactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="transactionType" Type="char" MaxLength="1" Nullable="false" />
+    <Property Name="accountNum" Type="int" Nullable="false" />
+    <Property Name="destAccoutNum" Type="int" />
+    <Property Name="amount" Type="float" Nullable="false" />
+    <Property Name="comment" Type="nvarchar" MaxLength="300" />
+    <Property Name="modifyDate" Type="datetime" Nullable="false" />
+    <Property Name="transactionTypeCode" Type="int" />
+  </EntityType>
+  <EntityType Name="transactiontypeCode">
+    <Key>
+      <PropertyRef Name="code" />
+    </Key>
+    <Property Name="code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="description" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="feeAUD" Type="float" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_account_custID">
+    <End Role="customer" Type="Self.customer" Multiplicity="1" />
+    <End Role="account" Type="Self.account" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="customer">
+        <PropertyRef Name="custID" />
+      </Principal>
+      <Dependent Role="account">
+        <PropertyRef Name="custID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_billPay_Payee">
+    <End Role="Payee" Type="Self.Payee" Multiplicity="1" />
+    <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Payee">
+        <PropertyRef Name="payeeID" />
+      </Principal>
+      <Dependent Role="billPay">
+        <PropertyRef Name="payeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Payee_BPAY">
+    <End Role="account" Type="Self.account" Multiplicity="1" />
+    <End Role="billPay" Type="Self.billPay" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="billPay">
+        <PropertyRef Name="accountNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transaction_account">
+    <End Role="account" Type="Self.account" Multiplicity="1" />
+    <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="accountNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transaction_account1">
+    <End Role="account" Type="Self.account" Multiplicity="0..1" />
+    <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="account">
+        <PropertyRef Name="accountNumber" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="destAccoutNum" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_transaction_transactiontypeCode">
+    <End Role="transactiontypeCode" Type="Self.transactiontypeCode" Multiplicity="0..1" />
+    <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="transactiontypeCode">
+        <PropertyRef Name="code" />
+      </Principal>
+      <Dependent Role="transaction">
+        <PropertyRef Name="transactionTypeCode" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NWABModelStoreContainer">
+    <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="billPay" EntityType="Self.billPay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Payee" EntityType="Self.Payee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="transaction" EntityType="Self.transaction" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="transactiontypeCode" EntityType="Self.transactiontypeCode" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
+      <End Role="customer" EntitySet="customer" />
+      <End Role="account" EntitySet="account" />
+    </AssociationSet>
+    <AssociationSet Name="FK_billPay_Payee" Association="Self.FK_billPay_Payee">
+      <End Role="Payee" EntitySet="Payee" />
+      <End Role="billPay" EntitySet="billPay" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
+      <End Role="account" EntitySet="account" />
+      <End Role="billPay" EntitySet="billPay" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transaction_account" Association="Self.FK_transaction_account">
+      <End Role="account" EntitySet="account" />
+      <End Role="transaction" EntitySet="transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transaction_account1" Association="Self.FK_transaction_account1">
+      <End Role="account" EntitySet="account" />
+      <End Role="transaction" EntitySet="transaction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_transaction_transactiontypeCode" Association="Self.FK_transaction_transactiontypeCode">
+      <End Role="transactiontypeCode" EntitySet="transactiontypeCode" />
+      <End Role="transaction" EntitySet="transaction" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
