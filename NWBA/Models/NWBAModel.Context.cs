@@ -28,8 +28,8 @@ namespace NWBA.Models
         public virtual DbSet<account> accounts { get; set; }
         public virtual DbSet<billPay> billPays { get; set; }
         public virtual DbSet<customer> customers { get; set; }
-        public virtual DbSet<login> logins { get; set; }
         public virtual DbSet<Payee> Payees { get; set; }
         public virtual DbSet<transaction> transactions { get; set; }
+        public virtual DbSet<transactiontypeCode> transactiontypeCodes { get; set; }
     }
 }

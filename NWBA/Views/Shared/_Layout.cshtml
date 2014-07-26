@@ -26,10 +26,10 @@
                 <ul class="nav navbar-nav">
                     @if (Request.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Statement","Statement","Bank")</li>
-                        <li>@Html.ActionLink("New Transaction","Transaction","Bank")</li>
+                        <li>@Html.ActionLink("My Statement","Statement","Bank")</li>
+                        <li>@Html.ActionLink("Deposit/Withdraw","Transaction","Bank")</li>
 
-                        <li>@Html.ActionLink("Schedule Bill Pay","BillPay","Bank")</li>
+                        @*<li>@Html.ActionLink("Schedule Bill Pay","BillPay","Bank")</li>*@
                         <li>@Html.ActionLink("My Profile", "Details", "Customer")</li>
                     }
                     

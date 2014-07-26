@@ -33,6 +33,5 @@ namespace NWBA.Models
         public string email { get; set; }
     
         public virtual ICollection<account> accounts { get; set; }
-        public virtual login login { get; set; }
     }
 }

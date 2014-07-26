@@ -12,13 +12,17 @@ namespace NWBA.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class login
+    public partial class transactiontypeCode
     {
-        public int custID { get; set; }
-        public string userid { get; set; }
-        public string pass { get; set; }
-        public System.DateTime modifydate { get; set; }
+        public transactiontypeCode()
+        {
+            this.transactions = new HashSet<transaction>();
+        }
     
-        public virtual customer customer { get; set; }
+        public int code { get; set; }
+        public string description { get; set; }
+        public double feeAUD { get; set; }
+    
+        public virtual ICollection<transaction> transactions { get; set; }
     }
 }

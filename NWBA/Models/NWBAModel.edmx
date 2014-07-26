@@ -43,15 +43,6 @@
           <Property Name="mobile" Type="nvarchar" MaxLength="12" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="login">
-          <Key>
-            <PropertyRef Name="custID" />
-          </Key>
-          <Property Name="custID" Type="int" Nullable="false" />
-          <Property Name="userid" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="pass" Type="nvarchar" MaxLength="15" Nullable="false" />
-          <Property Name="modifydate" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityType Name="Payee">
           <Key>
             <PropertyRef Name="payeeID" />
@@ -69,13 +60,21 @@
             <PropertyRef Name="transactionID" />
           </Key>
           <Property Name="transactionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="transactionType" Type="int" Nullable="false" />
+          <Property Name="transactionType" Type="char" MaxLength="1" Nullable="false" />
           <Property Name="accountNum" Type="int" Nullable="false" />
           <Property Name="destAccoutNum" Type="int" />
           <Property Name="amount" Type="float" Nullable="false" />
           <Property Name="comment" Type="nvarchar" MaxLength="300" />
           <Property Name="modifyDate" Type="datetime" Nullable="false" />
-          <Property Name="transactionTypeCode" Type="nvarchar" MaxLength="1" />
+          <Property Name="transactionTypeCode" Type="int" />
+        </EntityType>
+        <EntityType Name="transactiontypeCode">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="feeAUD" Type="float" Nullable="false" />
         </EntityType>
         <Association Name="FK_account_custID">
           <End Role="customer" Type="Self.customer" Multiplicity="1" />
@@ -98,18 +97,6 @@
             </Principal>
             <Dependent Role="billPay">
               <PropertyRef Name="payeeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_login_customerID">
-          <End Role="customer" Type="Self.customer" Multiplicity="1" />
-          <End Role="login" Type="Self.login" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="login">
-              <PropertyRef Name="custID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -149,13 +136,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_transaction_transactiontypeCode">
+          <End Role="transactiontypeCode" Type="Self.transactiontypeCode" Multiplicity="0..1" />
+          <End Role="transaction" Type="Self.transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transactiontypeCode">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="transactionTypeCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="NWABModelStoreContainer">
           <EntitySet Name="account" EntityType="Self.account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="billPay" EntityType="Self.billPay" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="customer" EntityType="Self.customer" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="login" EntityType="Self.login" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payee" EntityType="Self.Payee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="transaction" EntityType="Self.transaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="transactiontypeCode" EntityType="Self.transactiontypeCode" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
             <End Role="customer" EntitySet="customer" />
             <End Role="account" EntitySet="account" />
@@ -163,10 +162,6 @@
           <AssociationSet Name="FK_billPay_Payee" Association="Self.FK_billPay_Payee">
             <End Role="Payee" EntitySet="Payee" />
             <End Role="billPay" EntitySet="billPay" />
-          </AssociationSet>
-          <AssociationSet Name="FK_login_customerID" Association="Self.FK_login_customerID">
-            <End Role="customer" EntitySet="customer" />
-            <End Role="login" EntitySet="login" />
           </AssociationSet>
           <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
             <End Role="account" EntitySet="account" />
@@ -178,6 +173,10 @@
           </AssociationSet>
           <AssociationSet Name="FK_transaction_account1" Association="Self.FK_transaction_account1">
             <End Role="account" EntitySet="account" />
+            <End Role="transaction" EntitySet="transaction" />
+          </AssociationSet>
+          <AssociationSet Name="FK_transaction_transactiontypeCode" Association="Self.FK_transaction_transactiontypeCode">
+            <End Role="transactiontypeCode" EntitySet="transactiontypeCode" />
             <End Role="transaction" EntitySet="transaction" />
           </AssociationSet>
         </EntityContainer>
@@ -221,7 +220,6 @@
           <Property Name="TFN" Type="String" MaxLength="11" FixedLength="false" Unicode="true" />
           <Property Name="dateCreated" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="accounts" Relationship="Self.FK_account_custID" FromRole="customer" ToRole="account" />
-          <NavigationProperty Name="login" Relationship="Self.FK_login_customerID" FromRole="customer" ToRole="login" />
           <Property Name="addressLine1" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="addressLine2" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="suburb" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
@@ -230,16 +228,6 @@
           <Property Name="phoneNumber" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="mobile" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="login">
-          <Key>
-            <PropertyRef Name="custID" />
-          </Key>
-          <Property Name="custID" Nullable="false" Type="Int32" />
-          <Property Name="userid" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="pass" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" Type="String" />
-          <Property Name="modifydate" Nullable="false" Precision="3" Type="DateTime" />
-          <NavigationProperty Name="customer" Relationship="Self.FK_login_customerID" FromRole="login" ToRole="customer" />
         </EntityType>
         <EntityType Name="Payee">
           <Key>
@@ -278,23 +266,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_login_customerID">
-          <End Type="Self.customer" Multiplicity="1" Role="customer" />
-          <End Type="Self.login" Multiplicity="0..1" Role="login" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="custID" />
-            </Principal>
-            <Dependent Role="login">
-              <PropertyRef Name="custID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="NWABEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="accounts" EntityType="Self.account" />
           <EntitySet Name="billPays" EntityType="Self.billPay" />
           <EntitySet Name="customers" EntityType="Self.customer" />
-          <EntitySet Name="logins" EntityType="Self.login" />
           <EntitySet Name="Payees" EntityType="Self.Payee" />
           <AssociationSet Name="FK_account_custID" Association="Self.FK_account_custID">
             <End Role="customer" EntitySet="customers" />
@@ -303,10 +278,6 @@
           <AssociationSet Name="fk_Payee_BPAY" Association="Self.fk_Payee_BPAY">
             <End Role="Payee" EntitySet="Payees" />
             <End Role="billPay" EntitySet="billPays" />
-          </AssociationSet>
-          <AssociationSet Name="FK_login_customerID" Association="Self.FK_login_customerID">
-            <End EntitySet="customers" Role="customer" />
-            <End EntitySet="logins" Role="login" />
           </AssociationSet>
           <EntitySet Name="transactions" EntityType="NWABModel.transaction" />
           <AssociationSet Name="FK_transaction_account" Association="NWABModel.FK_transaction_account">
@@ -321,13 +292,18 @@
             <End Role="account" EntitySet="accounts" />
             <End Role="billPay" EntitySet="billPays" />
           </AssociationSet>
+          <EntitySet Name="transactiontypeCodes" EntityType="NWABModel.transactiontypeCode" />
+          <AssociationSet Name="FK_transaction_transactiontypeCode" Association="NWABModel.FK_transaction_transactiontypeCode">
+            <End Role="transactiontypeCode" EntitySet="transactiontypeCodes" />
+            <End Role="transaction" EntitySet="transactions" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="transaction">
           <Key>
             <PropertyRef Name="transactionID" />
           </Key>
           <Property Name="transactionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="transactionType" Type="Int32" Nullable="false" />
+          <Property Name="transactionType" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
           <Property Name="accountNum" Type="Int32" Nullable="false" />
           <Property Name="destAccoutNum" Type="Int32" />
           <Property Name="amount" Type="Double" Nullable="false" />
@@ -335,7 +311,8 @@
           <Property Name="modifyDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="account" Relationship="NWABModel.FK_transaction_account" FromRole="transaction" ToRole="account" />
           <NavigationProperty Name="account1" Relationship="NWABModel.FK_transaction_account1" FromRole="transaction" ToRole="account" />
-          <Property Name="transactionTypeCode" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="transactionTypeCode" Type="Int32" />
+          <NavigationProperty Name="transactiontypeCode1" Relationship="NWABModel.FK_transaction_transactiontypeCode" FromRole="transaction" ToRole="transactiontypeCode" />
         </EntityType>
         <Association Name="FK_transaction_account">
           <End Type="NWABModel.account" Role="account" Multiplicity="1" />
@@ -370,6 +347,27 @@
             </Principal>
             <Dependent Role="billPay">
               <PropertyRef Name="accountNum" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="transactiontypeCode">
+          <Key>
+            <PropertyRef Name="code" />
+          </Key>
+          <Property Name="code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="description" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="feeAUD" Type="Double" Nullable="false" />
+          <NavigationProperty Name="transactions" Relationship="NWABModel.FK_transaction_transactiontypeCode" FromRole="transactiontypeCode" ToRole="transaction" />
+        </EntityType>
+        <Association Name="FK_transaction_transactiontypeCode">
+          <End Type="NWABModel.transactiontypeCode" Role="transactiontypeCode" Multiplicity="0..1" />
+          <End Type="NWABModel.transaction" Role="transaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="transactiontypeCode">
+              <PropertyRef Name="code" />
+            </Principal>
+            <Dependent Role="transaction">
+              <PropertyRef Name="transactionTypeCode" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -420,16 +418,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="logins">
-            <EntityTypeMapping TypeName="NWABModel.login">
-              <MappingFragment StoreEntitySet="login">
-                <ScalarProperty Name="custID" ColumnName="custID" />
-                <ScalarProperty Name="userid" ColumnName="userid" />
-                <ScalarProperty Name="pass" ColumnName="pass" />
-                <ScalarProperty Name="modifydate" ColumnName="modifydate" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Payees">
             <EntityTypeMapping TypeName="NWABModel.Payee">
               <MappingFragment StoreEntitySet="Payee">
@@ -454,6 +442,15 @@
                 <ScalarProperty Name="accountNum" ColumnName="accountNum" />
                 <ScalarProperty Name="transactionType" ColumnName="transactionType" />
                 <ScalarProperty Name="transactionID" ColumnName="transactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="transactiontypeCodes">
+            <EntityTypeMapping TypeName="NWABModel.transactiontypeCode">
+              <MappingFragment StoreEntitySet="transactiontypeCode">
+                <ScalarProperty Name="feeAUD" ColumnName="feeAUD" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="code" ColumnName="code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -8,15 +8,15 @@
         <EntityTypeShape EntityType="NWABModel.account" Width="1.5" PointX="10.5" PointY="2.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NWABModel.billPay" Width="1.5" PointX="8" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="NWABModel.customer" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="NWABModel.login" PointX="3" PointY="1.25" Width="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NWABModel.Payee" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="NWABModel.Payee" Width="1.5" PointX="5.75" PointY="1.75" IsExpanded="true" />
         <AssociationConnector Association="NWABModel.FK_account_custID" ManuallyRouted="false" />
         <AssociationConnector Association="NWABModel.fk_Payee_BPAY" ManuallyRouted="false" />
-        <AssociationConnector ManuallyRouted="false" Association="NWABModel.FK_login_customerID" />
-        <EntityTypeShape EntityType="NWABModel.transaction" Width="1.5" PointX="8.25" PointY="5.375" />
+        <EntityTypeShape EntityType="NWABModel.transaction" Width="1.5" PointX="8.25" PointY="5.25" />
         <AssociationConnector Association="NWABModel.FK_transaction_account" />
         <AssociationConnector Association="NWABModel.FK_transaction_account1" />
         <AssociationConnector Association="NWABModel.fk_Payee_BPAY1" />
+        <EntityTypeShape EntityType="NWABModel.transactiontypeCode" Width="1.5" PointX="0.75" PointY="0.875" />
+        <AssociationConnector Association="NWABModel.FK_transaction_transactiontypeCode" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

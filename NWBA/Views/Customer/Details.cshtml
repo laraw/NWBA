@@ -1,4 +1,4 @@
-﻿@model NWBA.Models.customer
+﻿@model NWBA.ViewModels.CustomerView
 
 @{
     ViewBag.Title = "Details";
@@ -12,14 +12,14 @@
     <h4>Customer Information</h4>
     <dl class="dl-horizontal">
         <dt>
-            Name
+            @Html.DisplayNameFor(model => model.custName)
         </dt>
 
         <dd>
             @Model.custName
         </dd>
         <dt>
-            TFN
+            @Html.DisplayNameFor(model => model.TFN)
         </dt>
         <dd>
             @Model.TFN
@@ -31,35 +31,35 @@
     <h4> Address Information </h4>
     <dl class="dl-horizontal">
         <dt>
-            Address Line 1
+            @Html.DisplayNameFor(model => model.addressLine1)
         </dt>
         <dd>
             @Model.addressLine1
         </dd>
 
         <dt>
-            Address Line 2
+            @Html.DisplayNameFor(model => model.addressLine2)
         </dt>
         <dd>
             @Model.addressLine2
         </dd>
 
         <dt>
-            Suburb
+            @Html.DisplayNameFor(model => model.suburb)
         </dt>
         <dd>
             @Model.suburb
         </dd>
 
         <dt>
-            State
+            @Html.DisplayNameFor(model => model.state)
         </dt>
         <dd>
             @Model.state
         </dd>
 
         <dt>
-            Postal Code
+            @Html.DisplayNameFor(model => model.postalCode)
         </dt>
         <dd>
             @Model.postalCode
@@ -72,21 +72,21 @@
 <dl class="dl-horizontal">
 
         <dt>
-            Phone Number
+            @Html.DisplayNameFor(model => model.phoneNumber)
         </dt>
         <dd>
             @Model.phoneNumber
         </dd>
 
         <dt>
-            Mobile
+            @Html.DisplayNameFor(model => model.mobile)
         </dt>
         <dd>
             @Model.mobile
         </dd>
 
         <dt>
-            E-mail
+            @Html.DisplayNameFor(model => model.email)
         </dt>
         <dd>
             @Model.email

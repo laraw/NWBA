@@ -15,15 +15,16 @@ namespace NWBA.Models
     public partial class transaction
     {
         public int transactionID { get; set; }
-        public int transactionType { get; set; }
+        public string transactionType { get; set; }
         public int accountNum { get; set; }
         public Nullable<int> destAccoutNum { get; set; }
         public double amount { get; set; }
         public string comment { get; set; }
         public System.DateTime modifyDate { get; set; }
-        public string transactionTypeCode { get; set; }
+        public Nullable<int> transactionTypeCode { get; set; }
     
         public virtual account account { get; set; }
         public virtual account account1 { get; set; }
+        public virtual transactiontypeCode transactiontypeCode1 { get; set; }
     }
 }
